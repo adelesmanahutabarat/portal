@@ -1,0 +1,8 @@
+{
+    "Article": true,
+    "Tag": true,
+    "Comment": true,
+    "Catalog": true,
+    "Withdraw": true,
+    "Bank": true
+}
