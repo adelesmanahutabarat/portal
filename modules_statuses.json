@@ -4,5 +4,6 @@
     "Comment": true,
     "Catalog": true,
     "Withdraw": true,
-    "Bank": true
+    "Bank": true,
+    "Master": true
 }
