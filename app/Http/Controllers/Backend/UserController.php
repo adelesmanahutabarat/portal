@@ -11,6 +11,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Branch;
+use App\Models\EmployeeStatus;
+use App\Models\Parameter;
 use App\Models\Userprofile;
 use App\Models\UserProvider;
 use Carbon\Carbon;
@@ -181,10 +184,13 @@ class UserController extends Controller
 
         $roles = Role::get();
         $permissions = Permission::select('name', 'id')->get();
+        $branches = Branch::select('name', 'id')->get();
+        $employee_status = EmployeeStatus::select('name', 'id')->get();
+        $religions = Parameter::select('title', 'value')->where('name', 'religion')->get();
 
         return view(
             "backend.$module_name.create",
-            compact('module_title', 'module_name', 'module_path', 'module_icon', 'module_action', 'module_name_singular', 'roles', 'permissions')
+            compact('module_title', 'module_name', 'module_path', 'module_icon', 'module_action', 'module_name_singular', 'roles', 'permissions', 'branches', 'employee_status', 'religions')
         );
     }
 
@@ -205,6 +211,9 @@ class UserController extends Controller
         $module_name_singular = Str::singular($module_name);
 
         $module_action = 'Details';
+
+
+        dd($request);
 
         $request->validate([
             'first_name'=> 'required|min:3|max:191',

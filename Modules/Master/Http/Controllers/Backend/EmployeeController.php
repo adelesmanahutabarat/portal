@@ -64,6 +64,32 @@ class EmployeeController extends Controller
         );
     }
 
+    public function index_list(Request $request)
+    {
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'List';
+
+        $reportDate = $request->bulan;
+
+        $users = User::all();
+
+        return Datatables::of($users)
+        ->addIndexColumn()
+        ->addColumn('action', function ($data) {
+            $module_name = $this->module_name;
+
+            return view('master::includes.action_column', compact('module_name', 'data'));
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+    }
+
     /**
      * Show the form for creating a new resource.
      * @return Renderable

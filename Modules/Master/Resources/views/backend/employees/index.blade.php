@@ -22,6 +22,12 @@
                 </div>
             </div>
 
+            <div class="col-6 col-sm-4">
+                <div class="float-right">
+                    <x-buttons.create route='{{ route("backend.users.create") }}'
+                        title="{{__('Create')}} {{ ucwords(Str::singular($module_name)) }}" />
+                </div>
+            </div>
             <!--/.col-->
         </div>
         <!--/.row-->
@@ -30,6 +36,7 @@
 
         <div class="row mt-4">
             <div class="col">
+
                 <div>
                     <label for="">Cabang</label>
                     <form id="frm-filter" class="form-inline" action="#">
@@ -53,7 +60,7 @@
 
         <div class="row mt-4">
             <div class="col">
-                <!-- <div class="table-responsive"> -->
+                <div class="table-responsive">
                 <table id="datatable" class="table table-hover  ">
                     <thead>
                         <tr>
@@ -64,19 +71,13 @@
                             <th>Jenis Kelamin</th>
                             <th>Penempatan</th>
                             <th>Status</th>
-                            <th>Tgl Lahir</th>
-                            <th>Tempat Lahir</th>
-                            <th>Agama</th>
-                            <th>Alamat</th>
-                            <th>Jabatan</th>
-                            <th>NPWP</th>
                             <th>Nomor KTP</th>
-                            <th>Pendidikan Terakhir</th>
+
                             <th class="text-right">Action</th>
                         </tr>
                     </thead>
                 </table>
-                <!-- </div> -->
+                </div>
             </div>
         </div>
     </div>
@@ -120,7 +121,7 @@ table = $('#datatable').DataTable({
     ],
     processing: true,
     serverSide: true,
-    autoWidth: true,
+    autoWidth: false,
     responsive: false,
     ajax: {
         'url': '{{ route("backend.$module_name.index_list") }}',
@@ -135,84 +136,34 @@ table = $('#datatable').DataTable({
             searchable: false,
         },
         {
-            data: 'label_name',
-            name: 'sr.label_name',
+            data: 'name',
+            name: 'name',
         },
         {
-            data: 'gross_revenue',
-            name: 'gross_revenue',
-            searchable: false,
+            data: 'email',
+            name: 'email',
         },
         {
-            data: 'net_revenue',
-            name: 'net_revenue',
-            searchable: false,
+            data: 'mobile',
+            name: 'mobile',
         },
         {
-            data: 'partner_revenue',
-            name: 'partner_revenue',
-            searchable: false,
+            data: 'gender',
+            name: 'gender',
         },
         {
-            data: 'user',
-            name: 'user',
-            orderable: false,
-            searchable: false,
+            data: 'placement',
+            name: 'placement',
         },
         {
-            data: 'user',
-            name: 'user',
-            orderable: false,
-            searchable: false,
+            data: 'employee_status',
+            name: 'employee_status',
         },
         {
-            data: 'user',
-            name: 'user',
-            orderable: false,
-            searchable: false,
+            data: 'id_card_number',
+            name: 'id_card_number',
         },
-        {
-            data: 'user',
-            name: 'user',
-            orderable: false,
-            searchable: false,
-        },
-        {
-            data: 'user',
-            name: 'user',
-            orderable: false,
-            searchable: false,
-        },
-        {
-            data: 'user',
-            name: 'user',
-            orderable: false,
-            searchable: false,
-        },
-        {
-            data: 'user',
-            name: 'user',
-            orderable: false,
-            searchable: false,
-        },
-        {
-            data: 'user',
-            name: 'user',
-            orderable: false,
-            searchable: false,
-        },
-        {
-            data: 'user',
-            name: 'user',
-            orderable: false,
-            searchable: false,
-        },
-        {
-            data: 'user',
-            name: 'user',
-            orderable: false,
-            searchable: false,
-        },
+
         {
             data: 'action',
             name: 'action',
@@ -227,13 +178,6 @@ table = $('#datatable').DataTable({
         }
     },
     "drawCallback": function drawCallback() {
-        var sumGross = this.api().ajax.json().gross_revenue;
-        var sumNet = this.api().ajax.json().net_revenue;
-        var sumPartner = this.api().ajax.json().partner_revenue;
-
-        $('#grossTotalSum').html(sumGross.toFixed(2));
-        $('#netTotalSum').html(sumNet.toFixed(2));
-        $('#PartnerTotalSum').html(sumPartner.toFixed(2));
 
         $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
     }
