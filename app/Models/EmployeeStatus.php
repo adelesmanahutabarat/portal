@@ -10,4 +10,13 @@ class EmployeeStatus extends BaseModel
     use HasFactory;
     protected $fillable = [];
     protected $table = 'employee_status';
+
+        /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+    
 }

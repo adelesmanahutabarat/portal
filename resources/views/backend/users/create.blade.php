@@ -119,8 +119,8 @@
                     {{ html()->label(__('labels.backend.users.fields.gender'))->class('col-sm-2 form-control-label')->for('gender') }}
                     <div class="col-sm-10">
                         <select class="form-control" name="gender" id="gender">
-                            <option value="Pria">Pria</option>
-                            <option value="Wanita">Wanita</option>
+                            <option value="Male">Pria</option>
+                            <option value="Female">Wanita</option>
                         </select>
                     </div>
                 </div>
@@ -153,7 +153,7 @@
                 <div class="form-group row">
                     {{ html()->label(__('labels.backend.users.fields.placement'))->class('col-sm-2 form-control-label')->for('placement') }}
                     <div class="col-sm-10">
-                        <select class="form-control" name="placement" id="placement">
+                        <select class="form-control" name="placement_id" id="placement_id">
                             @foreach($branches as $item)
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach
@@ -165,7 +165,7 @@
                 <div class="form-group row">
                     {{ html()->label(__('labels.backend.users.fields.employee_status'))->class('col-sm-2 form-control-label')->for('employee_status') }}
                     <div class="col-sm-10">
-                        <select class="form-control" name="employee_status" id="employee_status">
+                        <select class="form-control" name="status_id" id="status_id">
                             @foreach($employee_status as $item)
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach

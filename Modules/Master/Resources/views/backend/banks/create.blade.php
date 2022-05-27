@@ -39,50 +39,13 @@
 
         <div class="row mt-4">
             <div class="col">
-                {{ html()->form('POST', route('backend.bankaccounts.store'))->class('form-horizontal')->open() }}
+                {{ html()->form('POST', route('backend.banks.store'))->class('form-horizontal')->open() }}
                 {{ csrf_field() }}
 
                 <div class="form-group">
-                    {{ html()->label('User')->class('form-control-label')->for('user') }}
+                    {{ html()->label('Nama Bank')->class('form-control-label')->for('name') }}
                     <div class="input-group mb-3">
-                        <select class="custom-select mb-2 select-user" name="user_id" id="user_id"
-                            required="true">
-                            <option value="" selected>Select User</option>
-                            @foreach ($users as $item)
-                            <option value="{{ $item->id }}">
-                                {{ $item->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    {{ html()->label('Bank')->class('form-control-label')->for('bank') }}
-                    <div class="input-group mb-3">
-                        <select class="custom-select mb-2 select-bank" name="bank_id" id="bank_id"
-                            required="true">
-                            <option value="" selected>Select Bank</option>
-                            @foreach ($banks as $item)
-                            <option value="{{ $item->id }}">
-                                {{ $item->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    {{ html()->label('Nomor Rekening')->class('form-control-label')->for('account_number') }}
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="account_number" value="">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    {{ html()->label('Atas Nama')->class('form-control-label')->for('name_on_account') }}
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="name_on_account" value="">
+                        <input type="text" class="form-control" name="name" value="">
                     </div>
                 </div>
 

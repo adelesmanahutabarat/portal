@@ -153,11 +153,11 @@ table = $('#datatable').DataTable({
         },
         {
             data: 'placement',
-            name: 'placement',
+            name: 'bc.name',
         },
         {
             data: 'employee_status',
-            name: 'employee_status',
+            name: 'es.name',
         },
         {
             data: 'id_card_number',

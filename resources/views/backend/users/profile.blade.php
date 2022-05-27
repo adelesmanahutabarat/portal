@@ -62,40 +62,117 @@
                             [ 'name' => 'last_login', 'type' => 'datetime' ],
                             [ 'name' => 'last_ip' ],
                         ]; ?>
-                        @foreach ($fields_array as $field)
+
                             <tr>
-                                @php
-                                $field_name = $field['name'];
-                                $field_type = isset($field['type'])? $field['type'] : '';
-                                @endphp
-
-                                <th>{{ __("labels.backend.users.fields.".$field_name) }}</th>
-
-                                @if ($field_name == 'date_of_birth' && $userprofile->$field_name != '')
                                 <td>
-                                    @if(auth()->user()->id == $userprofile->user_id)
-                                    {{ $userprofile->$field_name->isoFormat('LL') }}
-                                    @else
-                                    {{ $userprofile->$field_name->format('jS \\of F') }}
-                                    @endif
+                                    <strong>
+                                        Gender
+                                    </strong>
                                 </td>
-                                @elseif ($field_type == 'date' && $userprofile->$field_name != '')
                                 <td>
-                                    {{ $userprofile->$field_name->isoFormat('LL') }}
+                                    {{ $user->gender }}
                                 </td>
-                                @elseif ($field_type == 'datetime' && $userprofile->$field_name != '')
-                                <td>
-                                    {{ $userprofile->$field_name->isoFormat('llll') }}
-                                </td>
-                                @elseif ($field_type == 'url')
-                                <td>
-                                    <a href="{{ $userprofile->$field_name }}" target="_blank">{{ $userprofile->$field_name }}</a>
-                                </td>
-                                @else
-                                <td>{{ $userprofile->$field_name }}</td>
-                                @endif
                             </tr>
-                        @endforeach
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Date of Birth
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{ $user->date_of_birth }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Place of Birth
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{ $user->place_of_birth }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Placement
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{ $user->placement }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Status Employee
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{ $user->employee_status }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Religion
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{ $user->religion }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Position
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{ $user->position }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        NPWP
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{ $user->npwp }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Last Education
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{ $user->last_education }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        Address
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{ $user->address }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>
+                                        ID Card
+                                    </strong>
+                                </td>
+                                <td>
+                                    {{ $user->id_card_number }}
+                                </td>
+                            </tr>
 
                         <tr>
                             <th>{{ __('labels.backend.users.fields.password') }}</th>
@@ -105,19 +182,6 @@
                         </tr>
                         @role('super admin')
                         <tr>
-                            <th>{{ __('labels.backend.users.fields.social') }}</th>
-                            <td>
-                                <ul class="list-unstyled">
-                                    @foreach ($user->providers as $provider)
-                                    <li>
-                                        <i class="fab fa-{{ $provider->provider }}"></i> {{ label_case($provider->provider) }}
-                                    </li>
-                                    @endforeach
-                                </ul>
-                            </td>
-                        </tr>
-
-                        <tr>
                             <th>{{ __('labels.backend.users.fields.status') }}</th>
                             <td>{!! $user->status_label !!}</td>
                         </tr>
@@ -125,31 +189,6 @@
                         <tr>
                             <th>{{ __('labels.backend.users.fields.confirmed') }}</th>
                             <td>{!! $user->confirmed_label !!}</td>
-                        </tr>
-                        <tr>
-                            <th>{{ __('labels.backend.users.fields.roles') }}</th>
-                            <td>
-                                @if($user->roles()->count() > 0)
-                                    <ul>
-                                        @foreach ($user->roles() as $role)
-                                        <li>{{ ucwords($role) }}</li>
-                                        @endforeach
-                                    </ul>
-                                @endif
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <th>{{ __('labels.backend.users.fields.permissions') }}</th>
-                            <td>
-                                @if($user->permissions()->count() > 0)
-                                    <ul>
-                                        @foreach ($user->permissions() as $permission)
-                                        <li>{{ $permission['name'] }}</li>
-                                        @endforeach
-                                    </ul>
-                                @endif
-                            </td>
                         </tr>
 
                         <tr>

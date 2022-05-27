@@ -38,11 +38,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>User</th>
                                 <th>Bank</th>
-                                <th>Nomor Rekening</th>
-                                <th>Atas Nama</th>
-
                                 <th class="text-right">{{ __('labels.backend.action') }}</th>
                             </tr>
                         </thead>
@@ -94,18 +90,6 @@ $('#datatable').DataTable({
         {
             data: 'name',
             name: 'u.name'
-        },
-        {
-            data: 'bank',
-            name: 'b.name'
-        },
-        {
-            data: 'account_number',
-            name: 'ba.account_number'
-        }, 
-        {
-            data: 'name_on_account',
-            name: 'ba.name_on_account'
         },
         {
             data: 'action',

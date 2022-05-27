@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Log;
 use Modules\Master\Entities\Branch;
 use App\Models\User;
+use App\Models\Userprofile;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use Auth;
@@ -77,7 +78,10 @@ class EmployeeController extends Controller
 
         $reportDate = $request->bulan;
 
-        $users = User::all();
+        $users = User::Join('branches as bc', 'users.placement_id', 'bc.id')
+        ->Join('employee_status as es', 'users.status_id', 'es.id')
+        ->selectRaw('users.*, bc.name as placement, es.name as employee_status')
+        ->get();
 
         return Datatables::of($users)
         ->addIndexColumn()
@@ -116,7 +120,29 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        return view('master::show');
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'Show';
+
+        $$module_name_singular = $module_model::findOrFail($id);
+        $user = User::Join('branches as bc', 'users.placement_id', 'bc.id')
+        ->Join('employee_status as es', 'users.status_id', 'es.id')
+        ->selectRaw('users.*, bc.name as placement, es.name as employee_status')
+        ->first();
+
+        $userprofile = Userprofile::selectRaw('name')->where('user_id', $$module_name_singular->id)->first();
+
+        Log::info(label_case($module_title.' '.$module_action).' | User:'.auth()->user()->name.'(ID:'.auth()->user()->id.')');
+
+        return view(
+            "master::backend.$module_name.show",
+            compact('module_title', 'module_name', 'module_path', 'module_icon', 'module_action', 'module_name_singular', "$module_name_singular", 'userprofile', 'user')
+        );
     }
 
     /**

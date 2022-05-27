@@ -212,9 +212,6 @@ class UserController extends Controller
 
         $module_action = 'Details';
 
-
-        dd($request);
-
         $request->validate([
             'first_name'=> 'required|min:3|max:191',
             'last_name' => 'required|min:3|max:191',
@@ -315,7 +312,12 @@ class UserController extends Controller
         $module_name_singular = Str::singular($module_name);
         $module_action = 'Profile Show';
 
-        $$module_name_singular = $module_model::with('roles', 'permissions')->findOrFail($id);
+        $$module_name_singular = $module_model::with('roles', 'permissions')
+        ->leftJoin('branches as bc', 'users.placement_id', 'bc.id')
+        ->leftJoin('employee_status as es', 'users.status_id', 'es.id')
+        ->where('users.id', $id)
+        ->selectRaw('users.*, bc.name as placement, es.name as employee_status')
+        ->first();
 
         if ($$module_name_singular) {
             $userprofile = Userprofile::where('user_id', $id)->first();
@@ -600,12 +602,15 @@ class UserController extends Controller
 
         $roles = Role::get();
         $permissions = Permission::select('name', 'id')->get();
+        $branches = Branch::select('name', 'id')->get();
+        $employee_status = EmployeeStatus::select('name', 'id')->get();
+        $religions = Parameter::select('title', 'value')->where('name', 'religion')->get();
 
         Log::info(label_case($module_title.' '.$module_action)." | '".$$module_name_singular->name.'(ID:'.$$module_name_singular->id.") ' by User:".auth()->user()->name.'(ID:'.auth()->user()->id.')');
 
         return view(
             "backend.$module_name.edit",
-            compact('module_title', 'module_name', 'module_path', 'module_icon', 'module_action', 'module_name_singular', "$module_name_singular", 'roles', 'permissions', 'userRoles', 'userPermissions')
+            compact('module_title', 'module_name', 'module_path', 'module_icon', 'module_action', 'module_name_singular', "$module_name_singular", 'roles', 'permissions', 'userRoles', 'userPermissions', 'branches', 'employee_status', 'religions')
         );
     }
 
@@ -643,8 +648,9 @@ class UserController extends Controller
         // ]);
 
         $$module_name_singular = User::findOrFail($id);
-
+        $request['name'] = $request->first_name.' '.$request->last_name;
         $$module_name_singular->update($request->except(['roles', 'permissions']));
+        
 
         if ($id == 1) {
             $user->syncRoles(['super admin']);
