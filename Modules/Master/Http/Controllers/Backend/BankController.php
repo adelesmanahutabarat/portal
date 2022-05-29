@@ -79,11 +79,9 @@ class BankController extends Controller
         return Datatables::of($data)
         ->addIndexColumn()
         ->addColumn('action', function ($data) {
-            $btn = "<div class='text-right'>
-            <a href='".url("admin/bankaccounts/".$data->id)."/edit' class='btn btn-success btn-sm mt-1' data-toggle='tooltip' title=''><i class='fas fa-edit'></i></a> 
-            </div>";
+            $module_name = $this->module_name;
 
-            return $btn;
+            return view('master::includes.action_column', compact('module_name', 'data'));
         })
         ->rawColumns(['action'])
         ->make(true);
@@ -119,7 +117,6 @@ class BankController extends Controller
      */
     public function store(Request $request)
     {
-        dd("test");
         $module_title = $this->module_title;
         $module_name = $this->module_name;
         $module_path = $this->module_path;
@@ -129,7 +126,7 @@ class BankController extends Controller
 
         $module_action = 'Store';
 
-        $data = $request->all() + ['created_by' => Auth::user()->id] + ['created_by_name' => Auth::user()->name];
+        $data = $request->all();
 
         $$module_name_singular = $module_model::create($data);
 
@@ -147,6 +144,7 @@ class BankController extends Controller
      */
     public function show($id)
     {
+        dd("test");
         return view('master::show');
     }
 
@@ -157,7 +155,21 @@ class BankController extends Controller
      */
     public function edit($id)
     {
-        return view('master::edit');
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'Edit';
+        
+        $$module_name_singular = $module_model::findOrFail($id);
+        
+        return view(
+            "master::backend.$module_name.edit",
+            compact('module_title', 'module_name', 'module_path', 'module_icon', 'module_action', 'module_name_singular', 'bank')
+        );
     }
 
     /**
@@ -168,7 +180,24 @@ class BankController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'Update';
+
+        $$module_name_singular =$module_model::findOrFail($id);
+        $$module_name_singular->name = $request->name;
+        $$module_name_singular->save();
+        
+        Flash::success("<i class='fas fa-check'></i> Bank '".Str::singular($module_title)."' Updated")->important();
+
+        Log::info(label_case($module_title.' '.$module_action)." | '".$$module_name_singular->name.'(ID:'.$$module_name_singular->id.") ' by User:".auth()->user()->name.'(ID:'.auth()->user()->id.')');
+
+        return redirect("admin/$module_name");
     }
 
     /**

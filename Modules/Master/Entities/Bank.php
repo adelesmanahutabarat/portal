@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Bank extends Model
 {
     use HasFactory;
-    protected $fillable = [];
+    protected $fillable = ['name'];
     protected $table = 'banks';
 
+    public function bankaccount(){
+        return $this->hasMany('Modules\Master\Entities\BankAccount');
+    }
 }

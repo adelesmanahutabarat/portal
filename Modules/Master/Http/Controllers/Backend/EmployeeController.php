@@ -86,7 +86,7 @@ class EmployeeController extends Controller
         return Datatables::of($users)
         ->addIndexColumn()
         ->addColumn('action', function ($data) {
-            $module_name = $this->module_name;
+            $module_name = 'users';
 
             return view('master::includes.action_column', compact('module_name', 'data'));
         })

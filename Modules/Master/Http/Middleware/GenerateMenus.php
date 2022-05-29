@@ -28,8 +28,10 @@ class GenerateMenus
                     'admin/employee*',
                     'admin/bank*',
                     'admin/bank_account*',
+                    'admin/branch*',
+                    'admin/employee_status*',
                 ],
-                'permission'    => ['view_employees', 'view_banks', 'view_bank_accounts'],
+                'permission'    => ['view_employees', 'view_banks', 'view_bank_accounts', 'view_branch', 'view_employee_status'],
             ]);
             $accessControl->link->attr([
                 'class' => 'c-sidebar-nav-dropdown-toggle',
@@ -65,7 +67,7 @@ class GenerateMenus
             ]);
 
             // Submenu: Bank Account
-            $accessControl->add('<i class="c-sidebar-nav-icon far fa-address-card"></i> Bank Account', [
+            $accessControl->add('<i class="c-sidebar-nav-icon far fa-address-card"></i>Bank Account', [
                 'route' => 'backend.bankaccounts.index',
                 'class' => 'nav-item',
             ])
@@ -73,6 +75,34 @@ class GenerateMenus
                 'order'         => 106,
                 'activematches' => 'admin/bankaccounts*',
                 'permission'    => ['view_bankaccounts'],
+            ])
+            ->link->attr([
+                'class' => 'c-sidebar-nav-link',
+            ]);
+
+            // Submenu: Branch
+            $accessControl->add('<i class="c-sidebar-nav-icon fas fa-project-diagram"></i>Cabang', [
+                'route' => 'backend.branches.index',
+                'class' => 'nav-item',
+            ])
+            ->data([
+                'order'         => 106,
+                'activematches' => 'admin/branches*',
+                'permission'    => ['view_branches'],
+            ])
+            ->link->attr([
+                'class' => 'c-sidebar-nav-link',
+            ]);
+
+            // Submenu: Employee Status
+            $accessControl->add('<i class="c-sidebar-nav-icon fas fa-marker"></i> Employee Status', [
+                'route' => 'backend.employeestatus.index',
+                'class' => 'nav-item',
+            ])
+            ->data([
+                'order'         => 106,
+                'activematches' => 'admin/employeestatus*',
+                'permission'    => ['view_employeestatus'],
             ])
             ->link->attr([
                 'class' => 'c-sidebar-nav-link',
