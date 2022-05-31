@@ -18,7 +18,7 @@
                         class="text-muted">{{ $module_action }}</small>
                 </h4>
                 <div class="small text-muted">
-                    Bank Account
+                {{ $module_title }} Management
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Bank</th>
+                                <th>Status</th>
                                 <th class="text-right">{{ __('labels.backend.action') }}</th>
                             </tr>
                         </thead>

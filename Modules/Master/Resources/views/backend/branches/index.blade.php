@@ -38,7 +38,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Bank</th>
+                                <th>Cabang</th>
                                 <th class="text-right">{{ __('labels.backend.action') }}</th>
                             </tr>
                         </thead>

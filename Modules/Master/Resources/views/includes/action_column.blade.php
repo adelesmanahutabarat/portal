@@ -3,7 +3,7 @@
     <x-buttons.edit route='{{route("backend.$module_name.edit", $data)}}'
         title="{{__('Edit')}} {{ ucwords(Str::singular($module_name)) }}" small="true" />
     @endcan
-    @if($module_name <> 'banks')
+    @if($module_name <> 'banks' and $module_name <> 'branches' and $module_name <> 'employeestatus')
         <x-buttons.show route='{!!route("backend.$module_name.show", $data)!!}'
             title="{{__('Show')}} {{ ucwords(Str::singular($module_name)) }}" small="true" />
     @endif

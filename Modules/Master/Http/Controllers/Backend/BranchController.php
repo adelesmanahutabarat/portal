@@ -2,19 +2,89 @@
 
 namespace Modules\Master\Http\Controllers\Backend;
 
+use App\Authorizable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
+use Log;
+use App\Models\User;
+use Modules\Master\Entities\Branch;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
+use Auth;
+use Flash;
 
 class BranchController extends Controller
 {
+    use Authorizable;
+
+    public function __construct()
+    {
+        // Page Title
+        $this->module_title = 'Branch';
+
+        // module name
+        $this->module_name = 'branches';
+
+        // directory path of the module
+        $this->module_path = 'branches';
+
+        // module icon
+        $this->module_icon = 'c-icon far fa-address-book';
+
+        // module model name, path
+        $this->module_model = "Modules\Master\Entities\Branch";
+    }
+
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
     public function index()
     {
-        return view('master::index');
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'List';
+
+        $page_heading = ucfirst($module_title);
+        $title = $page_heading.' '.ucfirst($module_action);
+
+        Log::info(label_case($module_title.' '.$module_action).' | User:'.auth()->user()->name.'(ID:'.auth()->user()->id.')');
+     
+        return view(
+            "master::backend.$module_name.index",
+            compact('module_title', 'module_name', 'module_path', 'module_icon', 'module_action', 'module_name_singular')
+        );
+    }
+
+    public function index_list()
+    {
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'List';
+
+        $data = Branch::all();
+                
+        return Datatables::of($data)
+        ->addIndexColumn()
+        ->addColumn('action', function ($data) {
+            $module_name = $this->module_name;
+
+            return view('master::includes.action_column', compact('module_name', 'data'));
+        })
+        ->rawColumns(['action'])
+        ->make(true);
     }
 
     /**
@@ -23,7 +93,21 @@ class BranchController extends Controller
      */
     public function create()
     {
-        return view('master::create');
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'Create';
+
+        Log::info(label_case($module_title.' '.$module_action).' | User:'.auth()->user()->name.'(ID:'.auth()->user()->id.')');
+
+        return view(
+            "master::backend.$module_name.create",
+            compact('module_title', 'module_name', 'module_path', 'module_icon', 'module_action', 'module_name_singular')
+        );
     }
 
     /**
@@ -33,7 +117,24 @@ class BranchController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'Store';
+
+        $data = $request->all();
+
+        $$module_name_singular = $module_model::create($data);
+
+        Flash::success("<i class='fas fa-check'></i> New '".Str::singular($module_title)."' Added")->important();
+
+        Log::info(label_case($module_title.' '.$module_action)." | '".$$module_name_singular->name.'(ID:'.$$module_name_singular->id.") ' by User:".auth()->user()->name.'(ID:'.auth()->user()->id.')');
+
+        return redirect("admin/$module_name");
     }
 
     /**
@@ -53,7 +154,21 @@ class BranchController extends Controller
      */
     public function edit($id)
     {
-        return view('master::edit');
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'Edit';
+        
+        $$module_name_singular = $module_model::findOrFail($id);
+        
+        return view(
+            "master::backend.$module_name.edit",
+            compact('module_title', 'module_name', 'module_path', 'module_icon', 'module_action', 'module_name_singular', 'branch')
+        );
     }
 
     /**
@@ -64,7 +179,24 @@ class BranchController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'Update';
+
+        $$module_name_singular =$module_model::findOrFail($id);
+        $$module_name_singular->name = $request->name;
+        $$module_name_singular->save();
+        
+        Flash::success("<i class='fas fa-check'></i> Bank '".Str::singular($module_title)."' Updated")->important();
+
+        Log::info(label_case($module_title.' '.$module_action)." | '".$$module_name_singular->name.'(ID:'.$$module_name_singular->id.") ' by User:".auth()->user()->name.'(ID:'.auth()->user()->id.')');
+
+        return redirect("admin/$module_name");
     }
 
     /**
