@@ -18,21 +18,18 @@
                         class="text-muted">{{ $module_action }}</small>
                 </h4>
                 <div class="small text-muted">
-                    Report Management
+                    Bank Account
                 </div>
             </div>
 
             <div class="col-6 col-sm-4">
                 <div class="float-right">
-                    <x-buttons.create route='{{ route("backend.users.create") }}'
-                        title="{{__('Create')}} {{ ucwords(Str::singular($module_name)) }}" />
+                    <x-buttons.create route='' id='{{"btncreate"}}' title="{{__('Create')}} {{ ucwords(Str::singular($module_name)) }}"/>
                 </div>
             </div>
             <!--/.col-->
         </div>
         <!--/.row-->
-
-        <hr>
 
         <div class="row mt-4">
             <div class="col">
@@ -40,8 +37,8 @@
                     <label for="">Cabang</label>
                     <form id="frm-filter" class="form-inline" action="#">
                         <div class="form-group mb-2 ">
-                            <label class="sr-only">Bulan</label>
-                            <select class="form-control" name="bulan" id="bulan">
+                            <label class="sr-only">Cabang</label>
+                            <select class="form-control" name="branch_id" id="branch_id">
                                 @foreach($branches as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
@@ -60,22 +57,18 @@
         <div class="row mt-4">
             <div class="col">
                 <div class="table-responsive">
-                <table id="datatable" class="table table-hover  ">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>No.HP</th>
-                            <th>Jenis Kelamin</th>
-                            <th>Penempatan</th>
-                            <th>Status</th>
-                            <th>Nomor KTP</th>
-
-                            <th class="text-right">Action</th>
-                        </tr>
-                    </thead>
-                </table>
+                    <table id="datatable" class="table table-hover  ">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Date Period</th>
+                                <th>Total</th>
+                                <th>Created By</th>
+                                <th>Created At</th>
+                                <th class="text-right">{{ __('labels.backend.action') }}</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>
@@ -100,74 +93,48 @@
 
 @push ('after-scripts')
 <script>
-function myFunction() {
-    if (!confirm("Yakin Ingin Menghapus Label Ini?"))
-        event.preventDefault();
-}
+    function myFunction() {
+        if(!confirm("Yakin Ingin Menghapus Label Ini?"))
+            event.preventDefault();
+    }
 </script>
 
 <!-- DataTables Core and Extensions -->
 <script type="text/javascript">
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
-
-table = $('#datatable').DataTable({
-    order: [
-        [2, 'desc']
-    ],
+$('#datatable').DataTable({
     processing: true,
     serverSide: true,
-    autoWidth: false,
+    autoWidth: true,
     responsive: false,
-    ajax: {
-        'url': '{{ route("backend.$module_name.index_list") }}',
-        'data': function(d) {
-            d.bulan = $("#bulan").val()
-        },
-    },
+    ajax: '{{ route("backend.$module_name.index_list") }}',
     columns: [{
             data: 'DT_RowIndex',
             name: 'DT_RowIndex',
             orderable: false,
-            searchable: false,
+            searchable: false
+        },
+        {
+            data: 'date_period',
+            name: 'date_period'
+        },
+        {
+            data: 'total',
+            name: 'total',
+            render: $.fn.dataTable.render.number('', '.', 2, ''),
         },
         {
             data: 'name',
-            name: 'name',
+            name: 'u.name'
         },
         {
-            data: 'email',
-            name: 'email',
-        },
-        {
-            data: 'mobile',
-            name: 'mobile',
-        },
-        {
-            data: 'gender',
-            name: 'gender',
-        },
-        {
-            data: 'placement',
-            name: 'bc.name',
-        },
-        {
-            data: 'employee_status',
-            name: 'es.name',
-        },
-        {
-            data: 'id_card_number',
-            name: 'id_card_number',
-        },
-
+            data: 'created_at',
+            name: 'created_at'
+        }, 
         {
             data: 'action',
             name: 'action',
             orderable: false,
-            searchable: false,
+            searchable: false
         }
     ],
     "language": {
@@ -177,14 +144,19 @@ table = $('#datatable').DataTable({
         }
     },
     "drawCallback": function drawCallback() {
-
         $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
     }
 });
 
-$("#btnfilter").click(function() {
-    // alert("test filter");
-    table.draw();
+$(document).on('ajaxComplete ready', function () {
+    $('.modalMd').off('click').on('click', function () {
+        $('#form-pencipta').load($(this).attr('value'));
+    });
+});
+
+$("#btncreate").click(function() {
+    var branch_id = $("#branch_id").val();
+    window.location = '{{ route("backend.$module_name.add",'') }}/' + branch_id;
 });
 </script>
 

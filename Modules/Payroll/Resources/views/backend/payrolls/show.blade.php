@@ -24,8 +24,7 @@
 
             <div class="col-6 col-sm-4">
                 <div class="float-right">
-                    <x-buttons.create route='{{ route("backend.users.create") }}'
-                        title="{{__('Create')}} {{ ucwords(Str::singular($module_name)) }}" />
+                    <x-buttons.return-back />
                 </div>
             </div>
             <!--/.col-->
@@ -36,46 +35,50 @@
 
         <div class="row mt-4">
             <div class="col">
-                <div>
-                    <label for="">Cabang</label>
-                    <form id="frm-filter" class="form-inline" action="#">
-                        <div class="form-group mb-2 ">
-                            <label class="sr-only">Bulan</label>
-                            <select class="form-control" name="bulan" id="bulan">
-                                @foreach($branches as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <button type="button" id="btnfilter" class="btn btn-primary mb-2 mx-3"><i
-                                class="fa fa-sync"></i> Filter</button>
-                    </form>
+                <div class="form-group">
+                    <table>
+                        <tr>
+                            <td>Cabang</td>
+                            <td>:</td>
+                            <td><b>{{$payroll->cabang}}</b></td>
+                        </tr>
+                        <tr>
+                            <td>Periode</td>
+                            <td>:</td>
+                            <td><b>{{$payroll->date_period}}</b></td>
+                        </tr>
+                        <!-- <tr>
+                            <td>Total</td>
+                            <td>:</td>
+                            <td><b>{{$payroll->total}}</b></td>
+                        </tr>
+                        <tr>
+                            <td>Created By</td>
+                            <td>:</td>
+                            <td><b>{{$payroll->name}}</b></td>
+                        </tr>
+                        <tr>
+                            <td>Created At</td>
+                            <td>:</td>
+                            <td><b>{{$payroll->created_at}}</b></td>
+                        </tr> -->
+                    </table>
                 </div>
-            </div>
-            <div class="ml-auto mr-3 text-right">
-                <!-- <h5><span class="badge badge-success text-white">Total <span id="grossTotalSum">0</span></span></h5> -->
             </div>
         </div>
 
         <div class="row mt-4">
             <div class="col">
                 <div class="table-responsive">
-                <table id="datatable" class="table table-hover  ">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>No.HP</th>
-                            <th>Jenis Kelamin</th>
-                            <th>Penempatan</th>
-                            <th>Status</th>
-                            <th>Nomor KTP</th>
-
-                            <th class="text-right">Action</th>
-                        </tr>
-                    </thead>
-                </table>
+                    <table id="datatable" class="table table-hover  ">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama Karyawan</th>
+                                <th>Nominal</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>
@@ -114,18 +117,23 @@ $.ajaxSetup({
     }
 });
 
+let urlString = window.location.href;
+let paramString = urlString.split('?')[1];
+let queryString = new URLSearchParams(paramString);
+
 table = $('#datatable').DataTable({
+    processing: true,
+    serverSide: true,
+    autoWidth: true,
+    responsive: false,
     order: [
         [2, 'desc']
     ],
-    processing: true,
-    serverSide: true,
-    autoWidth: false,
-    responsive: false,
     ajax: {
-        'url': '{{ route("backend.$module_name.index_list") }}',
+        'url': '{{ route("backend.$module_name.detail_list") }}',
         'data': function(d) {
-            d.bulan = $("#bulan").val()
+            d.user_id = queryString.get('user_id');
+            d.date = queryString.get('date');
         },
     },
     columns: [{
@@ -136,38 +144,12 @@ table = $('#datatable').DataTable({
         },
         {
             data: 'name',
-            name: 'name',
+            name: 'u.name',
         },
         {
-            data: 'email',
-            name: 'email',
-        },
-        {
-            data: 'mobile',
-            name: 'mobile',
-        },
-        {
-            data: 'gender',
-            name: 'gender',
-        },
-        {
-            data: 'placement',
-            name: 'bc.name',
-        },
-        {
-            data: 'employee_status',
-            name: 'es.name',
-        },
-        {
-            data: 'id_card_number',
-            name: 'id_card_number',
-        },
-
-        {
-            data: 'action',
-            name: 'action',
-            orderable: false,
-            searchable: false,
+            data: 'amount',
+            name: 'amount',
+            render: $.fn.dataTable.render.number('', '.', 2, ''),
         }
     ],
     "language": {
@@ -177,15 +159,10 @@ table = $('#datatable').DataTable({
         }
     },
     "drawCallback": function drawCallback() {
-
         $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
     }
 });
 
-$("#btnfilter").click(function() {
-    // alert("test filter");
-    table.draw();
-});
 </script>
 
 
