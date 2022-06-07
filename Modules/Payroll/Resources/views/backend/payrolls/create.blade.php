@@ -48,90 +48,22 @@
 
         <div class="row mt-4">
             <div class="col">
-                {{ html()->form('POST', route('backend.payrolls.store'))->class('form-horizontal')->open() }}
+            {{ html()->form('POST', route("backend.$module_name.store"))->attribute('enctype','multipart/form-data')->class('form')->id('form-upload')->open() }}
                 {{ csrf_field() }}
 
-                <div class="form-group">
-                    {{ html()->label('Cabang')->class('form-control-label')->for('branch_id') }}
-                    <div class="input-group mb-3">
-                        <!-- <select class="custom-select mb-2 select2-disabled select-branch select-2" name="branch_id" id="branch_id" required="true" disabled="">
-                            <option value="" selected>Select Cabang</option>
-                            @foreach ($branches as $item)
-                            <option value="{{ $item->id }}" {{ $item->id == $branch->id ? 'selected' : '' }}>
-                                {{ $item->name }}
-                            </option>
-                            @endforeach
-                        </select> -->
-                        <input type="text" class="form-control" value="{{ $branch->name }}" readonly>
-                        <input type="hidden" class="form-control" name="branch_id" value="{{ $branch->id }}">
-                    </div>
-                </div>
-
-                <div class="form-group">
+                <!-- <div class="form-group">
                     {{ html()->label('Periode')->class('form-control-label')->for('date_period') }}
                     <div class="input-group mb-3">
                         <input type="date" class="form-control" name="date_period" value="">
                     </div>
-                </div>
+                </div> -->
 
                 <div class="form-group">
-                    <div class="col-lg-12">
-                        @if ($errors->has('estimated_price'))
-                        <span class="text-danger">{{ $errors->first('estimated_price') }}</span>
-                        @endif
-                        <div>
-                            <div class="well clearfix">
-                                <a href="#" class="btn btn-primary pull-right add-record float-right" data-added="0"><i
-                                        class='uil uil-plus'></i> Add Detail</a>
-                            </div>
-                            <br>
-
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="tbl_posts">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Karyawan</th>
-                                            <th>Nominal</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbl_posts_body">
-                                        <tr id="rec-1">
-                                            <td><span class="sn">1</span>.</td>
-                                            <td>
-                                                <select class="custom-select mb-2 select-user select-2"
-                                                    name="user_id[]" id="user_id" required="true">
-                                                    <option value="" selected>Select Karyawan</option>
-                                                    @foreach ($users as $item)
-                                                    <option value="{{ $item->id }}">
-                                                        {{ $item->name }}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input type="text" required="true"
-                                                    class="form-control input-element nominal-detail"
-                                                    onkeyup="myfunction()" name="nominal[]" placeholder="6.000.000">
-                                            </td>
-                                            <td><a class="btn btn-xs delete-record" data-id="1"><i
-                                                        class="glyphicon glyphicon-trash"></i></a></td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr id="rec-1">
-                                            <td></td>
-                                            <td class="font-weight-bold">Total</td>
-                                            <td> <input type="text" class="form-control input-element input-total"
-                                                    id="total" name="total" placeholder="" readonly></td>
-                                            <td></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                    {{ html()->label('Pilih File')->class('form-control-label')->for('file') }}
+                    {{ html()->file('report_file')
+                                ->class('form-control')
+                                ->attribute('maxlength', 191)
+                                ->required() }}
                 </div>
 
                 <div class="row">
@@ -152,8 +84,7 @@
         <tr id="">
             <td><span class="sn"></span>.</td>
             <td>
-                <select class="custom-select mb-2 select-user select-2" name="user_id[]" id="user_id"
-                    required="true">
+                <select class="custom-select mb-2 select-user select-2" name="user_id[]" id="user_id" required="true">
                     <option value="" selected>-</option>
                     @foreach ($users as $item)
                     <option value="{{ $item->id }}">

@@ -490,3 +490,23 @@ if (!function_exists('date_today')) {
         return $str;
     }
 }
+
+/*
+ *
+ * Return Validate Date
+ *
+ * ------------------------------------------------------------------------
+ */
+if (!function_exists('validate_date')) {
+    /**
+     * Helper to grab the application name.
+     *
+     * @return mixed
+     */
+    function validate_date($date, $format = 'Y-m-d')
+    {
+        $d = DateTime::createFromFormat($format, $date);
+        // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
+        return $d && $d->format($format) === $date;
+    }
+}

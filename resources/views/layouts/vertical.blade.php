@@ -60,6 +60,7 @@
                 <!-- Start Content-->
                 <div class="container-fluid">
                     @yield('breadcrumb')
+                    @include('flash::message')
                     @yield('content')
                 </div>
             </div>

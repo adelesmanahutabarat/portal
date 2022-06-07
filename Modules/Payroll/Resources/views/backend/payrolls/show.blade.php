@@ -38,33 +38,17 @@
                 <div class="form-group">
                     <table>
                         <tr>
-                            <td>Cabang</td>
-                            <td>:</td>
-                            <td><b>{{$payroll->cabang}}</b></td>
-                        </tr>
-                        <tr>
                             <td>Periode</td>
                             <td>:</td>
                             <td><b>{{$payroll->date_period}}</b></td>
                         </tr>
-                        <!-- <tr>
-                            <td>Total</td>
-                            <td>:</td>
-                            <td><b>{{$payroll->total}}</b></td>
-                        </tr>
-                        <tr>
-                            <td>Created By</td>
-                            <td>:</td>
-                            <td><b>{{$payroll->name}}</b></td>
-                        </tr>
-                        <tr>
-                            <td>Created At</td>
-                            <td>:</td>
-                            <td><b>{{$payroll->created_at}}</b></td>
-                        </tr> -->
                     </table>
                 </div>
             </div>
+
+            <!-- <div class="ml-auto mr-3 text-right">
+                <h5><span class="badge badge-success text-white">Total $<span id="total">  </span></span></h5>
+            </div> -->
         </div>
 
         <div class="row mt-4">
@@ -74,7 +58,9 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>NIK</th>
                                 <th>Nama Karyawan</th>
+                                <th>Cabang</th>
                                 <th>Nominal</th>
                             </tr>
                         </thead>
@@ -121,6 +107,8 @@ let urlString = window.location.href;
 let paramString = urlString.split('?')[1];
 let queryString = new URLSearchParams(paramString);
 
+let id = urlString.substring(urlString.lastIndexOf('/') + 1);
+
 table = $('#datatable').DataTable({
     processing: true,
     serverSide: true,
@@ -132,8 +120,7 @@ table = $('#datatable').DataTable({
     ajax: {
         'url': '{{ route("backend.$module_name.detail_list") }}',
         'data': function(d) {
-            d.user_id = queryString.get('user_id');
-            d.date = queryString.get('date');
+            d.id = id;
         },
     },
     columns: [{
@@ -143,8 +130,16 @@ table = $('#datatable').DataTable({
             searchable: false,
         },
         {
+            data: 'nik',
+            name: 'nik',
+        },
+        {
             data: 'name',
-            name: 'u.name',
+            name: 'name',
+        },
+        {
+            data: 'cabang',
+            name: 'cabang',
         },
         {
             data: 'amount',

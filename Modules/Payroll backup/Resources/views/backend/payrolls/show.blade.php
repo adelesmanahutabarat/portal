@@ -18,39 +18,52 @@
                         class="text-muted">{{ $module_action }}</small>
                 </h4>
                 <div class="small text-muted">
-                {{ $module_title }} Management
+                    Report Management
                 </div>
             </div>
 
             <div class="col-6 col-sm-4">
                 <div class="float-right">
-                    <x-buttons.create route='{{ route("backend.$module_name.create") }}' id='{{"btncreate"}}' title="{{__('Create')}} {{ ucwords(Str::singular($module_name)) }}"/>
+                    <x-buttons.return-back />
                 </div>
             </div>
             <!--/.col-->
         </div>
         <!--/.row-->
 
+        <hr>
+
         <div class="row mt-4">
             <div class="col">
-                <div>
-                    <label for="">Periode Payroll</label>
-                    <form id="frm-filter" class="form-inline" action="#">
-                        <div class="form-group mb-2 ">
-                            <label class="sr-only">Period</label>
-                            <select class="form-control" name="date_period" id="date_period">
-                                @foreach($payrolls as $item)
-                                <option value="{{ $item->date_period }}">{{ $item->date_period }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <button type="button" id="btnfilter" class="btn btn-primary mb-2 mx-3"><i
-                                class="fa fa-sync"></i> Filter</button>
-                    </form>
+                <div class="form-group">
+                    <table>
+                        <tr>
+                            <td>Cabang</td>
+                            <td>:</td>
+                            <td><b>{{$payroll->cabang}}</b></td>
+                        </tr>
+                        <tr>
+                            <td>Periode</td>
+                            <td>:</td>
+                            <td><b>{{$payroll->date_period}}</b></td>
+                        </tr>
+                        <!-- <tr>
+                            <td>Total</td>
+                            <td>:</td>
+                            <td><b>{{$payroll->total}}</b></td>
+                        </tr>
+                        <tr>
+                            <td>Created By</td>
+                            <td>:</td>
+                            <td><b>{{$payroll->name}}</b></td>
+                        </tr>
+                        <tr>
+                            <td>Created At</td>
+                            <td>:</td>
+                            <td><b>{{$payroll->created_at}}</b></td>
+                        </tr> -->
+                    </table>
                 </div>
-            </div>
-            <div class="ml-auto mr-3 text-right">
-                <!-- <h5><span class="badge badge-success text-white">Total <span id="grossTotalSum">0</span></span></h5> -->
             </div>
         </div>
 
@@ -61,11 +74,8 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Date Period</th>
-                                <th>Total</th>
-                                <th>Created By</th>
-                                <th>Created At</th>
-                                <th class="text-right">{{ __('labels.backend.action') }}</th>
+                                <th>Nama Karyawan</th>
+                                <th>Nominal</th>
                             </tr>
                         </thead>
                     </table>
@@ -93,48 +103,53 @@
 
 @push ('after-scripts')
 <script>
-    function myFunction() {
-        if(!confirm("Yakin Ingin Menghapus Label Ini?"))
-            event.preventDefault();
-    }
+function myFunction() {
+    if (!confirm("Yakin Ingin Menghapus Label Ini?"))
+        event.preventDefault();
+}
 </script>
 
 <!-- DataTables Core and Extensions -->
 <script type="text/javascript">
-$('#datatable').DataTable({
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+let urlString = window.location.href;
+let paramString = urlString.split('?')[1];
+let queryString = new URLSearchParams(paramString);
+
+table = $('#datatable').DataTable({
     processing: true,
     serverSide: true,
     autoWidth: true,
     responsive: false,
-    ajax: '{{ route("backend.$module_name.index_list") }}',
+    order: [
+        [2, 'desc']
+    ],
+    ajax: {
+        'url': '{{ route("backend.$module_name.detail_list") }}',
+        'data': function(d) {
+            d.user_id = queryString.get('user_id');
+            d.date = queryString.get('date');
+        },
+    },
     columns: [{
             data: 'DT_RowIndex',
             name: 'DT_RowIndex',
             orderable: false,
-            searchable: false
-        },
-        {
-            data: 'date_period',
-            name: 'date_period'
-        },
-        {
-            data: 'total',
-            name: 'total',
-            render: $.fn.dataTable.render.number('', '.', 2, ''),
+            searchable: false,
         },
         {
             data: 'name',
-            name: 'u.name'
+            name: 'u.name',
         },
         {
-            data: 'created_at',
-            name: 'created_at'
-        }, 
-        {
-            data: 'action',
-            name: 'action',
-            orderable: false,
-            searchable: false
+            data: 'amount',
+            name: 'amount',
+            render: $.fn.dataTable.render.number('', '.', 2, ''),
         }
     ],
     "language": {
@@ -146,12 +161,6 @@ $('#datatable').DataTable({
     "drawCallback": function drawCallback() {
         $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
     }
-});
-
-$(document).on('ajaxComplete ready', function () {
-    $('.modalMd').off('click').on('click', function () {
-        $('#form-pencipta').load($(this).attr('value'));
-    });
 });
 
 </script>

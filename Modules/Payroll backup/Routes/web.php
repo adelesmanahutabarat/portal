@@ -10,6 +10,7 @@ Route::group(['namespace' => '\Modules\Payroll\Http\Controllers\Backend', 'as' =
     $module_name = 'payrolls';
     $controller_name = 'PayrollController';
     Route::get("$module_name/index_list", ['as' => "$module_name.index_list", 'uses' => "$controller_name@index_list"]);
+    Route::get("$module_name/add/{id}", ['as' => "$module_name.add", 'uses' => "$controller_name@add"]);
     Route::get("$module_name/detail_list", ['as' => "$module_name.detail_list", 'uses' => "$controller_name@detail_list"]);
 
     Route::get("$module_name/index_data", ['as' => "$module_name.index_data", 'uses' => "$controller_name@index_data"]);

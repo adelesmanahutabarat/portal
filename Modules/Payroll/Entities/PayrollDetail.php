@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class PayrollDetail extends Model
 {
     use HasFactory;
-    protected $fillable = ['date_period','branch_id','user_id','amount'];
+    protected $fillable = [];
     protected $table = 'payroll_details';
 }

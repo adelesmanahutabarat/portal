@@ -18,13 +18,13 @@
                         class="text-muted">{{ $module_action }}</small>
                 </h4>
                 <div class="small text-muted">
-                {{ $module_title }} Management
+                    Bank Account
                 </div>
             </div>
 
             <div class="col-6 col-sm-4">
                 <div class="float-right">
-                    <x-buttons.create route='{{ route("backend.$module_name.create") }}' id='{{"btncreate"}}' title="{{__('Create')}} {{ ucwords(Str::singular($module_name)) }}"/>
+                    <x-buttons.create route='' id='{{"btncreate"}}' title="{{__('Create')}} {{ ucwords(Str::singular($module_name)) }}"/>
                 </div>
             </div>
             <!--/.col-->
@@ -34,13 +34,13 @@
         <div class="row mt-4">
             <div class="col">
                 <div>
-                    <label for="">Periode Payroll</label>
+                    <label for="">Cabang</label>
                     <form id="frm-filter" class="form-inline" action="#">
                         <div class="form-group mb-2 ">
-                            <label class="sr-only">Period</label>
-                            <select class="form-control" name="date_period" id="date_period">
-                                @foreach($payrolls as $item)
-                                <option value="{{ $item->date_period }}">{{ $item->date_period }}</option>
+                            <label class="sr-only">Cabang</label>
+                            <select class="form-control" name="branch_id" id="branch_id">
+                                @foreach($branches as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -154,6 +154,10 @@ $(document).on('ajaxComplete ready', function () {
     });
 });
 
+$("#btncreate").click(function() {
+    var branch_id = $("#branch_id").val();
+    window.location = '{{ route("backend.$module_name.add",'') }}/' + branch_id;
+});
 </script>
 
 
