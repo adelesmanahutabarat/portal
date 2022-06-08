@@ -18,40 +18,38 @@
                         class="text-muted">{{ $module_action }}</small>
                 </h4>
                 <div class="small text-muted">
-                {{ $module_title }} Management
+                    Report Management
                 </div>
             </div>
 
             <div class="col-6 col-sm-4">
                 <div class="float-right">
-                    <x-buttons.create route='{{ route("backend.$module_name.create") }}' id='{{"btncreate"}}' title="{{__('Create')}} {{ ucwords(Str::singular($module_name)) }}"/>
+                    <x-buttons.return-back />
                 </div>
             </div>
             <!--/.col-->
         </div>
         <!--/.row-->
 
-        <!-- <div class="row mt-4">
+        <hr>
+
+        <div class="row mt-4">
             <div class="col">
-                <div>
-                    <label for="">Periode Payroll</label>
-                    <form id="frm-filter" class="form-inline" action="#">
-                        <div class="form-group mb-2 ">
-                            <label class="sr-only">Period</label>
-                            <select class="form-control" name="date_period" id="date_period">
-                                @foreach($payrolls as $item)
-                                <option value="{{ $item->date_period }}">{{ $item->date_period }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <button type="button" id="btnfilter" class="btn btn-primary mb-2 mx-3"><i
-                                class="fa fa-sync"></i> Filter</button>
-                    </form>
+                <div class="form-group">
+                    <table>
+                        <tr>
+                            <td>Periode</td>
+                            <td>:</td>
+                            <td><b>{{$payroll->date_period}}</b></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-            <div class="ml-auto mr-3 text-right">
-            </div>
-        </div> -->
+
+            <!-- <div class="ml-auto mr-3 text-right">
+                <h5><span class="badge badge-success text-white">Total $<span id="total">  </span></span></h5>
+            </div> -->
+        </div>
 
         <div class="row mt-4">
             <div class="col">
@@ -60,11 +58,10 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Date Period</th>
-                                <th>Total</th>
-                                <th>Created By</th>
-                                <th>Created At</th>
-                                <th class="text-right">{{ __('labels.backend.action') }}</th>
+                                <th>NIK</th>
+                                <th>Nama Karyawan</th>
+                                <th>Cabang</th>
+                                <th>Nominal</th>
                             </tr>
                         </thead>
                     </table>
@@ -92,48 +89,62 @@
 
 @push ('after-scripts')
 <script>
-    function myFunction() {
-        if(!confirm("Yakin Ingin Menghapus Label Ini?"))
-            event.preventDefault();
-    }
+function myFunction() {
+    if (!confirm("Yakin Ingin Menghapus Label Ini?"))
+        event.preventDefault();
+}
 </script>
 
 <!-- DataTables Core and Extensions -->
 <script type="text/javascript">
-$('#datatable').DataTable({
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+let urlString = window.location.href;
+let paramString = urlString.split('?')[1];
+let queryString = new URLSearchParams(paramString);
+
+let id = urlString.substring(urlString.lastIndexOf('/') + 1);
+
+table = $('#datatable').DataTable({
     processing: true,
     serverSide: true,
     autoWidth: true,
     responsive: false,
-    ajax: '{{ route("backend.$module_name.index_list") }}',
+    order: [
+        [2, 'desc']
+    ],
+    ajax: {
+        'url': '{{ route("backend.$module_name.detail_list") }}',
+        'data': function(d) {
+            d.id = id;
+        },
+    },
     columns: [{
             data: 'DT_RowIndex',
             name: 'DT_RowIndex',
             orderable: false,
-            searchable: false
+            searchable: false,
         },
         {
-            data: 'date_period',
-            name: 'date_period'
-        },
-        {
-            data: 'total',
-            name: 'total',
-            render: $.fn.dataTable.render.number('', '.', 2, ''),
+            data: 'nik',
+            name: 'nik',
         },
         {
             data: 'name',
-            name: 'u.name'
+            name: 'name',
         },
         {
-            data: 'created_at',
-            name: 'created_at'
-        }, 
+            data: 'cabang',
+            name: 'cabang',
+        },
         {
-            data: 'action',
-            name: 'action',
-            orderable: false,
-            searchable: false
+            data: 'amount',
+            name: 'amount',
+            render: $.fn.dataTable.render.number('', '.', 2, ''),
         }
     ],
     "language": {
@@ -145,12 +156,6 @@ $('#datatable').DataTable({
     "drawCallback": function drawCallback() {
         $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
     }
-});
-
-$(document).on('ajaxComplete ready', function () {
-    $('.modalMd').off('click').on('click', function () {
-        $('#form-pencipta').load($(this).attr('value'));
-    });
 });
 
 </script>

@@ -38,6 +38,8 @@ class AuthenticatedSessionController extends Controller
 
         if (Auth::user()->hasAnyRole(['label']) ) {// do your margic here
             return redirect()->route('label.dashboard');
+        }elseif(Auth::user()->hasAnyRole(['employee'])){
+            return redirect()->route('employee.dashboard');
         }
         else if ($redirectTo) {
             return redirect($redirectTo);

@@ -18,13 +18,14 @@
                         class="text-muted">{{ $module_action }}</small>
                 </h4>
                 <div class="small text-muted">
-                {{ $module_title }} Management
+                    {{ $module_title }} Management
                 </div>
             </div>
 
             <div class="col-6 col-sm-4">
                 <div class="float-right">
-                    <x-buttons.create route='{{ route("backend.$module_name.create") }}' id='{{"btncreate"}}' title="{{__('Create')}} {{ ucwords(Str::singular($module_name)) }}"/>
+                    <x-buttons.create route='{{ route("backend.$module_name.create") }}' id='{{"btncreate"}}'
+                        title="{{__('Create')}} {{ ucwords(Str::singular($module_name)) }}" />
                 </div>
             </div>
             <!--/.col-->
@@ -92,10 +93,10 @@
 
 @push ('after-scripts')
 <script>
-    function myFunction() {
-        if(!confirm("Yakin Ingin Menghapus Label Ini?"))
-            event.preventDefault();
-    }
+function myFunction() {
+    if (!confirm("Yakin Ingin Menghapus Label Ini?"))
+        event.preventDefault();
+}
 </script>
 
 <!-- DataTables Core and Extensions -->
@@ -128,7 +129,7 @@ $('#datatable').DataTable({
         {
             data: 'created_at',
             name: 'created_at'
-        }, 
+        },
         {
             data: 'action',
             name: 'action',
@@ -147,12 +148,12 @@ $('#datatable').DataTable({
     }
 });
 
-$(document).on('ajaxComplete ready', function () {
-    $('.modalMd').off('click').on('click', function () {
-        $('#form-pencipta').load($(this).attr('value'));
+$(document).on('ajaxComplete ready', function() {
+    $('#reset').on("click", function(e) {
+        if (!confirm("Yakin Ingin Reset Payroll Ini?"))
+            event.preventDefault();
     });
 });
-
 </script>
 
 

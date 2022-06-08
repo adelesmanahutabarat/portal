@@ -32,6 +32,21 @@ class GenerateMenus
                 'class' => 'c-sidebar-nav-link',
             ]);
         })->sortBy('order');
+        // Employee Sidebar
+        \Menu::make('employee_sidebar', function ($menu) {
+            // Dashboard
+            $menu->add('<i data-feather="home"></i> Dashboard', [
+                'route' => 'employee.dashboard',
+                'class' => 'c-sidebar-nav-item',
+            ])
+            ->data([
+                'order'         => 1,
+                'activematches' => 'employee/dashboard*',
+            ])
+            ->link->attr([
+                'class' => 'c-sidebar-nav-link',
+            ]);
+        })->sortBy('order');
         // Admin Sidebar
         \Menu::make('admin_sidebar', function ($menu) {
             // Dashboard

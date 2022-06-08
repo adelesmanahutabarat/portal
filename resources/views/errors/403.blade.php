@@ -1,4 +1,4 @@
-@extends('backend.layouts.app')
+@extends('layouts.vertical',['isDark'=>true])
 
 @section ('title', '403 Error' . " - " . config('app.name'))
 
