@@ -31,7 +31,7 @@ class GenerateMenus
                     'admin/branch*',
                     'admin/employee_status*',
                 ],
-                'permission'    => ['view_employees', 'view_banks', 'view_bank_accounts', 'view_branch', 'view_employee_status'],
+                'permission'    => ['view_employees', 'view_banks', 'view_bankaccounts', 'view_branches', 'view_employeestatus'],
             ]);
             $accessControl->link->attr([
                 'class' => 'c-sidebar-nav-dropdown-toggle',

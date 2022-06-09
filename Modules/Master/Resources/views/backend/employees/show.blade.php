@@ -27,7 +27,7 @@
             <!--/.col-->
             <div class="col-4">
                 <div class="float-right">
-
+                <x-buttons.return-back />
                 </div>
             </div>
             <!--/.col-->

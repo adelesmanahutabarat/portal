@@ -21,123 +21,22 @@
             </li>
         </ul>
 
+        
+        @php
+            if(Auth::user()->hasRole('employee')){
+            $role = 'employee';
+            }elseif(Auth::user()->hasRole('label')){
+            $role = 'label';
+            }else{
+            $role = 'backend';
+            }
+            @endphp
+
         <ul class="navbar-nav flex-row ml-auto d-flex list-unstyled topnav-menu float-right mb-0">
-            <li class="d-none d-sm-block">
-                <div class="app-search">
-                    <form>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search...">
-                            <span data-feather="search"></span>
-                        </div>
-                    </form>
-                </div>
-            </li>
 
-            <li class="dropdown d-none d-lg-block" data-toggle="tooltip" data-placement="left" title="Change language">
-                <a class="nav-link dropdown-toggle mr-0" data-toggle="dropdown" href="#" role="button"
-                    aria-haspopup="false" aria-expanded="false">
-                    <i data-feather="globe"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <!-- item-->
-                    <a href="{{route("language.switch", "en")}}" class="dropdown-item notify-item">
-                        <img src="{{ URL::asset('assets/images/flags/us.jpg') }}" alt="user-image" class="mr-2" height="12"> <span
-                            class="align-middle">English</span>
-                    </a>
-                </div>
-            </li>
-
-
-            <li class="dropdown notification-list" data-toggle="tooltip" data-placement="left"
-                title="8 new unread notifications">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
-                    aria-expanded="false">
-                    <i data-feather="bell"></i>
-                    <span class="noti-icon-badge"></span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right dropdown-lg">
-
-                    <!-- item-->
-                    <div class="dropdown-item noti-title border-bottom">
-                        <h5 class="m-0 font-size-16">
-                            <span class="float-right">
-                                <a href="" class="text-dark">
-                                    <small>Clear All</small>
-                                </a>
-                            </span>Notification
-                        </h5>
-                    </div>
-
-                    <div class="slimscroll noti-scroll">
-
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item border-bottom">
-                            <div class="notify-icon bg-primary"><i class="uil uil-user-plus"></i></div>
-                            <p class="notify-details">New user registered.<small class="text-muted">5 hours ago</small>
-                            </p>
-                        </a>
-
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item border-bottom">
-                            <div class="notify-icon">
-                                <img src="{{ URL::asset('assets/images/users/avatar-1.jpg') }}" class="img-fluid rounded-circle" alt="" />
-                            </div>
-                            <p class="notify-details">Karen Robinson</p>
-                            <p class="text-muted mb-0 user-msg">
-                                <small>Wow ! this admin looks good and awesome design</small>
-                            </p>
-                        </a>
-
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item border-bottom">
-                            <div class="notify-icon">
-                                <img src="{{ URL::asset('assets/images/users/avatar-2.jpg') }}" class="img-fluid rounded-circle" alt="" />
-                            </div>
-                            <p class="notify-details">Cristina Pride</p>
-                            <p class="text-muted mb-0 user-msg">
-                                <small>Hi, How are you? What about our next meeting</small>
-                            </p>
-                        </a>
-
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item border-bottom active">
-                            <div class="notify-icon bg-success"><i class="uil uil-comment-message"></i> </div>
-                            <p class="notify-details">Jaclyn Brunswick commented on Dashboard<small class="text-muted">1
-                                    min
-                                    ago</small></p>
-                        </a>
-
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item border-bottom">
-                            <div class="notify-icon bg-danger"><i class="uil uil-comment-message"></i></div>
-                            <p class="notify-details">Caleb Flakelar commented on Admin<small class="text-muted">4 days
-                                    ago</small></p>
-                        </a>
-
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                            <div class="notify-icon bg-primary">
-                                <i class="uil uil-heart"></i>
-                            </div>
-                            <p class="notify-details">Carlos Crouch liked
-                                <b>Admin</b>
-                                <small class="text-muted">13 days ago</small>
-                            </p>
-                        </a>
-                    </div>
-
-                    <!-- All-->
-                    <a href="javascript:void(0);"
-                        class="dropdown-item text-center text-primary notify-item notify-all border-top">
-                        View all
-                        <i class="fi-arrow-right"></i>
-                    </a>
-
-                </div>
-            </li>
-
-            <li class="dropdown notification-list" data-toggle="tooltip" data-placement="left" title="Settings">
-                <a href="{{route((Auth::user()->hasRole('label')?'label':'backend').'.users.profile', Auth::user()->id)}}" class="nav-link ">
+        <li class="dropdown notification-list" data-toggle="tooltip" data-placement="left" title="Settings">
+                <a href="{{route($role.'.users.profile', Auth::user()->id)}}"
+                    class="nav-link ">
                     <i data-feather="settings"></i>
                 </a>
             </li>

@@ -11,6 +11,8 @@ use Log;
 use Modules\Payroll\Entities\Payroll;
 use Modules\Payroll\Entities\PayrollDetail;
 use Modules\Master\Entities\Branch;
+use Modules\Master\Entities\BankAccount;
+use Modules\Master\Entities\Bank;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use League\Csv\Reader;
@@ -36,7 +38,7 @@ class UserPayrollController extends Controller
         $this->module_icon = 'c-icon far fa-file-alt';
 
         // module model name, path
-        $this->module_model = "Modules\Payroll\Entities\Payroll";
+        $this->module_model = "Modules\Payroll\Entities\PayrollDetail";
     }
 
     /**
@@ -57,15 +59,43 @@ class UserPayrollController extends Controller
         $page_heading = ucfirst($module_title);
         $title = $page_heading.' '.ucfirst($module_action);
 
-        $branches = Branch::all();
-        $payrolls = Payroll::all();
+        $payroll_details = PayrollDetail::where('nik', auth()->user()->nik)->get();
         
         Log::info(label_case($module_title.' '.$module_action).' | User:'.auth()->user()->name.'(ID:'.auth()->user()->id.')');
      
         return view(
-            "payroll::backend.$module_name.index",
-            compact('module_title', 'module_name', 'module_path', 'module_icon', 'module_action', 'module_name_singular', 'branches', 'payrolls')
+            "payroll::employee.$module_name.index",
+            compact('module_title', 'module_name', 'module_path', 'module_icon', 'module_action', 'module_name_singular', 'payroll_details')
         );
+    }
+
+    public function index_list()
+    {
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $module_action = 'List';
+
+        $data = PayrollDetail::where('nik', auth()->user()->nik)->get();
+
+        return Datatables::of($data)
+        ->addIndexColumn()
+        ->addColumn('action', function ($data) {
+            $module_name = $this->module_name;
+
+            return view('payroll::includes.action_column_employee', compact('module_name', 'data'));
+        })
+        ->addColumn('created_at', function ($data) {
+            $created_at = $data->created_at;
+
+            return $created_at;
+        })
+        ->rawColumns(['action', 'created_at'])
+        ->make(true);
     }
 
     /**
@@ -94,7 +124,21 @@ class UserPayrollController extends Controller
      */
     public function show($id)
     {
-        return view('payroll::show');
+        $module_title = $this->module_title;
+        $module_name = $this->module_name;
+        $module_path = $this->module_path;
+        $module_icon = $this->module_icon;
+        $module_model = $this->module_model;
+        $module_name_singular = Str::singular($module_name);
+
+        $data = $module_model::where([['id', '=', $id]])->firstOrFail();
+        $rekening = BankAccount::with('bank')->where('user_id',Auth::user()->id)->first();
+
+        $module_action = 'Show';
+        return view(
+            "payroll::employee.$module_name.invoice",
+            compact('module_title', 'module_name', 'module_icon', 'module_name_singular', 'module_action','data','rekening')
+        );
     }
 
     /**

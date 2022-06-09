@@ -45,13 +45,9 @@ class EmployeeController extends Controller
             $module_name_singular = Str::singular($module_name);
     
             $module_action = 'Dashboard';
+
+            $user = DB::table('users')->where('nik', Auth::user()->nik)->first();
     
-            $users = DB::table('users')->where('nik', null)->get();
-            $branches = DB::table('branches')->get();
-    
-            $user = count($users);
-            $branch = count($users);
-    
-            return view('backend.dashboard.employee', compact('user', 'branch'));
+            return view('backend.dashboard.employee', compact('user'));
         }
 }

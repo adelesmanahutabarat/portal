@@ -1,6 +1,5 @@
 <!-- Shortcut Icon -->
-<link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}">
-<link rel="icon" type="image/ico" href="{{asset('assets/images/favicon.png')}}" />
+<link rel="shortcut icon" href="{{ URL::asset('assets/images/logo.png') }}">
 
 @yield('css')
 <!-- App css -->

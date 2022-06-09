@@ -325,9 +325,10 @@ class UserController extends Controller
             Log::error('UserProfile Exception for Username: '.$username);
             abort(404);
         }
+
         $link = 'backend';
-        if(Auth::user()->hasRole('label')){
-            $link = 'label';
+        if(Auth::user()->hasRole('employee')){
+            $link = 'employee';
         }
         Log::info(label_case($module_title.' '.$module_action).' | User:'.auth()->user()->name.'(ID:'.auth()->user()->id.')');
 
@@ -359,8 +360,8 @@ class UserController extends Controller
         $$module_name_singular = $module_model::findOrFail($id);
         $userprofile = Userprofile::where('user_id', $$module_name_singular->id)->first();
         $link = 'backend';
-        if(Auth::user()->hasRole('label')){
-            $link = 'label';
+        if(Auth::user()->hasRole('employee')){
+            $link = 'employee';
         }
         Log::info(label_case($module_title.' '.$module_action).' | User:'.auth()->user()->name.'(ID:'.auth()->user()->id.')');
 
@@ -429,8 +430,8 @@ class UserController extends Controller
 
         Log::info(label_case($module_title.' '.$module_action).' | User:'.auth()->user()->name.'(ID:'.auth()->user()->id.')');
         $link = 'backend';
-        if(Auth::user()->hasRole('label')){
-            $link = 'label';
+        if(Auth::user()->hasRole('employee')){
+            $link = 'employee';
         }
         return redirect(route("$link.users.profile", $$module_name_singular->id));
     }
@@ -457,8 +458,8 @@ class UserController extends Controller
 
         $$module_name_singular = User::findOrFail($id);
         $link = 'backend';
-        if(Auth::user()->hasRole('label')){
-            $link = 'label';
+        if(Auth::user()->hasRole('employee')){
+            $link = 'employee';
         }
         return view("backend.$module_name.changeProfilePassword", compact('module_name', 'module_title', "$module_name_singular", 'module_icon', 'module_action','link'));
     }
@@ -497,8 +498,8 @@ class UserController extends Controller
 
         Flash::success(icon()." '".Str::singular($module_title)."' Updated Successfully")->important();
         $link = 'admin';
-        if(Auth::user()->hasRole('label')){
-            $link = 'label';
+        if(Auth::user()->hasRole('employee')){
+            $link = 'employee';
         }
         return redirect("$link/$module_name/profile/$id");
     }

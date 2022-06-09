@@ -35,8 +35,8 @@
             <div class="card-body p-0">
                 <div class="media p-3">
                     <div class="media-body">
-                        <span class="text-muted text-uppercase font-size-12 font-weight-bold">Jumlah Cabang</span>
-                        <h2 class="mb-0">{{$user}}</h2>
+                        <span class="text-muted text-uppercase font-size-12 font-weight-bold">Tahun Bergabung</span>
+                        <h2 class="mb-0">{{$user->join_date}}</h2>
                     </div>
                 </div>
             </div>
@@ -48,8 +48,8 @@
             <div class="card-body p-0">
                 <div class="media p-3">
                     <div class="media-body">
-                        <span class="text-muted text-uppercase font-size-12 font-weight-bold">Jumlah Cabang</span>
-                        <h2 class="mb-0">{{$branch}}</h2>
+                        <span class="text-muted text-uppercase font-size-12 font-weight-bold">NIK</span>
+                        <h2 class="mb-0">{{$user->nik}}</h2>
                     </div>
                     <div class="align-self-center">
 

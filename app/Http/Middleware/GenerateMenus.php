@@ -59,14 +59,14 @@ class GenerateMenus
             ]);
 
             // Notifications
-            $menu->add('<i data-feather="bell"></i> Notifications', [
-                'route' => 'backend.notifications.index',
-            ])
-            ->data([
-                'order'         => 99,
-                'activematches' => 'admin/notifications*',
-                'permission'    => [],
-            ]);
+            // $menu->add('<i data-feather="bell"></i> Notifications', [
+            //     'route' => 'backend.notifications.index',
+            // ])
+            // ->data([
+            //     'order'         => 99,
+            //     'activematches' => 'admin/notifications*',
+            //     'permission'    => [],
+            // ]);
 
             // Separator: Access Management
             $menu->add('Management', [
