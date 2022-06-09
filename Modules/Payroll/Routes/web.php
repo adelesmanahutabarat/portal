@@ -11,6 +11,7 @@ Route::group(['namespace' => '\Modules\Payroll\Http\Controllers\Backend', 'as' =
     $controller_name = 'PayrollController';
     Route::get("$module_name/index_list", ['as' => "$module_name.index_list", 'uses' => "$controller_name@index_list"]);
     Route::get("$module_name/detail_list", ['as' => "$module_name.detail_list", 'uses' => "$controller_name@detail_list"]);
+    Route::get("$module_name/getdownloadexample", ['as' => "$module_name.getdownloadexample", 'uses' => "$controller_name@getdownloadexample"]);
 
     Route::get("$module_name/index_data", ['as' => "$module_name.index_data", 'uses' => "$controller_name@index_data"]);
     Route::get("$module_name/trashed", ['as' => "$module_name.trashed", 'uses' => "$controller_name@trashed"]);

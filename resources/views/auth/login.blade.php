@@ -27,14 +27,14 @@
                             <div class="col-md-6 p-5">
                                 <div class="mx-auto mb-5">
                                     <a href="/">
-                                        <img src="{{asset('assets/images/favicon.png')}}" alt="" height="24" />
+                                        <img src="{{asset('assets/images/logo.png')}}" alt="" height="50" />
                                         <h3 class="d-inline align-middle ml-1 text-logo">{{ config('app.name') }}</h3>
                                     </a>
                                 </div>
 
                                 <h6 class="h5 mb-0 mt-4">Welcome back!</h6>
                                 <p class="text-muted mt-1 mb-4">Enter your email address and password to
-                                    access admin panel.</p>
+                                    access CAT Payroll System.</p>
 
                                 @if(session('error'))<div class="alert alert-danger">{{ session('error') }}</div>
                                 <br>@endif
@@ -101,9 +101,9 @@
                                 <div class="auth-page-sidebar">
                                     <div class="overlay"></div>
                                     <div class="auth-user-testimonial">
-                                        <p class="font-size-24 font-weight-bold text-white mb-1">I simply love it!</p>
-                                        <p class="lead">"It's a elegent templete. I love it very much!"</p>
-                                        <p>- Admin User</p>
+                                        <p class="font-size-24 font-weight-bold text-white mb-1">love your self</p>
+                                        <p class="lead">"Time is what we want most and what we use worst."</p>
+                                        <p>- Admin -</p>
                                     </div>
                                 </div>
                             </div>

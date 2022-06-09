@@ -45,18 +45,23 @@
         <!--/.row-->
 
         <hr>
-
         <div class="row mt-4">
             <div class="col">
-            {{ html()->form('POST', route("backend.$module_name.store"))->attribute('enctype','multipart/form-data')->class('form')->id('form-upload')->open() }}
-                {{ csrf_field() }}
+                <div>
+                    <h4 class="header-title mt-0 mb-1">Note</h4>
+                    <p class="sub-header">
+                        File harus berekstensi .CSV dengan format nama file sebagai berikut: <span class="text-danger">Report_Salary_082022.csv</span>
+                        <br>
+                        <span><a href='{{ route("backend.$module_name.getdownloadexample") }}'>Contoh Format</a></span>
+                    </p>
+                </div>
+            </div>
+        </div>
 
-                <!-- <div class="form-group">
-                    {{ html()->label('Periode')->class('form-control-label')->for('date_period') }}
-                    <div class="input-group mb-3">
-                        <input type="date" class="form-control" name="date_period" value="">
-                    </div>
-                </div> -->
+        <div class="row">
+            <div class="col">
+                {{ html()->form('POST', route("backend.$module_name.store"))->attribute('enctype','multipart/form-data')->class('form')->id('form-upload')->open() }}
+                {{ csrf_field() }}
 
                 <div class="form-group">
                     {{ html()->label('Pilih File')->class('form-control-label')->for('file') }}

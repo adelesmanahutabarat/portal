@@ -319,11 +319,19 @@ class UserController extends Controller
         ->selectRaw('users.*, bc.name as placement, es.name as employee_status')
         ->first();
 
-        if ($$module_name_singular) {
+        // if ($$module_name_singular) {
+        //     $userprofile = Userprofile::where('user_id', $id)->first();
+        // } else {
+        //     Log::error('UserProfile Exception for Username: '.$username);
+        //     abort(404);
+        // }
+
+        if (Auth::user()->role == 'super admin') {
+            $$module_name_singular = $module_model::with('roles', 'permissions')->findOrFail($id);
             $userprofile = Userprofile::where('user_id', $id)->first();
         } else {
-            Log::error('UserProfile Exception for Username: '.$username);
-            abort(404);
+            $$module_name_singular = $module_model::with('roles', 'permissions')->findOrFail(Auth::user()->id);
+            $userprofile = Userprofile::where('user_id', Auth::user()->id)->first();
         }
 
         $link = 'backend';
@@ -357,8 +365,17 @@ class UserController extends Controller
             $id = auth()->user()->id;
         }
         
-        $$module_name_singular = $module_model::findOrFail($id);
-        $userprofile = Userprofile::where('user_id', $$module_name_singular->id)->first();
+        // $$module_name_singular = $module_model::findOrFail($id);
+        // $userprofile = Userprofile::where('user_id', $$module_name_singular->id)->first();
+
+        if (Auth::user()->role == 'super admin') {
+            $$module_name_singular = $module_model::with('roles', 'permissions')->findOrFail($id);
+            $userprofile = Userprofile::where('user_id', $id)->first();
+        } else {
+            $$module_name_singular = $module_model::with('roles', 'permissions')->findOrFail(Auth::user()->id);
+            $userprofile = Userprofile::where('user_id', Auth::user()->id)->first();
+        }
+
         $link = 'backend';
         if(Auth::user()->hasRole('employee')){
             $link = 'employee';
@@ -401,7 +418,16 @@ class UserController extends Controller
             $id = auth()->user()->id;
         }
 
-        $$module_name_singular = User::findOrFail($id);
+        // $$module_name_singular = User::findOrFail($id);
+
+        if (Auth::user()->role == 'super admin') {
+            $$module_name_singular = User::findOrFail($id);
+            $userprofile = Userprofile::where('user_id', $id)->first();
+        } else {
+            $$module_name_singular = $module_model::with('roles', 'permissions')->findOrFail(Auth::user()->id);
+            $userprofile = Userprofile::where('user_id', Auth::user()->id)->first();
+        }
+
         $filename = $$module_name_singular->avatar;
 
         // Handle Avatar upload
@@ -456,7 +482,14 @@ class UserController extends Controller
         $module_icon = $this->module_icon;
         $module_action = 'Edit';
 
-        $$module_name_singular = User::findOrFail($id);
+        // $$module_name_singular = User::findOrFail($id);
+
+        if (Auth::user()->role == 'super admin') {
+            $$module_name_singular = User::findOrFail($id);
+        } else {
+            $$module_name_singular = User::findOrFail(Auth::user()->id);
+        }
+
         $link = 'backend';
         if(Auth::user()->hasRole('employee')){
             $link = 'employee';
@@ -489,7 +522,15 @@ class UserController extends Controller
             $id = auth()->user()->id;
         }
 
-        $$module_name_singular = User::findOrFail($id);
+        // $$module_name_singular = User::findOrFail($id);
+
+        if (Auth::user()->role == 'super admin') {
+            $$module_name_singular = User::findOrFail($id);
+            $userprofile = Userprofile::where('user_id', $id)->first();
+        } else {
+            $$module_name_singular = $module_model::with('roles', 'permissions')->findOrFail(Auth::user()->id);
+            $userprofile = Userprofile::where('user_id', Auth::user()->id)->first();
+        }
 
         $request_data = $request->only('password');
         $request_data['password'] = Hash::make($request_data['password']);
@@ -530,6 +571,14 @@ class UserController extends Controller
         }
 
         $$module_name_singular = $module_model::findOrFail($id);
+
+        if (Auth::user()->role == 'super admin') {
+            $$module_name_singular = $module_model::findOrFail($id);
+            $userprofile = Userprofile::where('user_id', $id)->first();
+        } else {
+            $$module_name_singular = $module_model::with('roles', 'permissions')->findOrFail(Auth::user()->id);
+            $userprofile = Userprofile::where('user_id', Auth::user()->id)->first();
+        }
 
         return view(
             "backend.$module_name.changePassword",

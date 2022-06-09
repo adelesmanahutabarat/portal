@@ -405,7 +405,10 @@ class PayrollController extends Controller
         );
     }
 
-
+	public function getdownloadexample()
+	{
+		return response()->download(public_path('file/example.csv'));
+	}
 
     /**
      * Update the specified resource in storage.
