@@ -247,6 +247,18 @@
                 <!--form-group-->
 
                 <div class="form-group row">
+                    {{ html()->label("NIK")->class('col-sm-2 form-control-label')->for('nik') }}
+                    <div class="col-sm-10">
+                        {{ html()->text('nik')
+                                ->class('form-control')
+                                ->placeholder("NIK")
+                                ->attribute('maxlength', 191)
+                                ->required() }}
+                    </div>
+                </div>
+                <!--form-group-->
+
+                <div class="form-group row">
                     {{ html()->label(__('labels.backend.users.fields.status'))->class('col-6 col-sm-2 form-control-label')->for('status') }}
 
                     <div class="col-6 col-sm-10">

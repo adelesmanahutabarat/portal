@@ -76,14 +76,17 @@ class EmployeeController extends Controller
 
         $module_action = 'List';
 
-        $reportDate = $request->bulan;
+        $cabang = $request->cabang;
 
         $users = User::Join('branches as bc', 'users.placement_id', 'bc.id')
         ->Join('employee_status as es', 'users.status_id', 'es.id')
-        ->selectRaw('users.*, bc.name as placement, es.name as employee_status')
-        ->get();
+        ->selectRaw('users.*, bc.name as placement, es.name as employee_status');
 
-        return Datatables::of($users)
+        if($cabang <> ''){
+            $users = $users->where('users.placement_id', $cabang);
+        }
+        
+        return Datatables::of($users->get())
         ->addIndexColumn()
         ->addColumn('action', function ($data) {
             $module_name = $this->module_name;

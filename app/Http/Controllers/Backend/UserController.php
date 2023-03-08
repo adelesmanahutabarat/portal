@@ -326,7 +326,7 @@ class UserController extends Controller
         //     abort(404);
         // }
 
-        if (Auth::user()->role == 'super admin') {
+        if (Auth::user()->hasRole('super admin')) {
             $$module_name_singular = $module_model::with('roles', 'permissions')->findOrFail($id);
             $userprofile = Userprofile::where('user_id', $id)->first();
         } else {
@@ -368,13 +368,14 @@ class UserController extends Controller
         // $$module_name_singular = $module_model::findOrFail($id);
         // $userprofile = Userprofile::where('user_id', $$module_name_singular->id)->first();
 
-        if (Auth::user()->role == 'super admin') {
+        if (Auth::user()->hasRole('super admin')) {
             $$module_name_singular = $module_model::with('roles', 'permissions')->findOrFail($id);
             $userprofile = Userprofile::where('user_id', $id)->first();
         } else {
             $$module_name_singular = $module_model::with('roles', 'permissions')->findOrFail(Auth::user()->id);
             $userprofile = Userprofile::where('user_id', Auth::user()->id)->first();
         }
+        // dd($userprofile);
 
         $link = 'backend';
         if(Auth::user()->hasRole('employee')){
@@ -409,10 +410,11 @@ class UserController extends Controller
 
         $this->validate($request, [
             'avatar'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'first_name'=> 'required|min:3|max:191',
-            'last_name' => 'required|min:3|max:191',
+            'first_name'=> 'required|min:2|max:191',
+            'last_name' => 'required|min:2|max:191',
             'email'     => 'email',
         ]);
+    
 
         if (!auth()->user()->can('edit_users')) {
             $id = auth()->user()->id;
@@ -420,7 +422,7 @@ class UserController extends Controller
 
         // $$module_name_singular = User::findOrFail($id);
 
-        if (Auth::user()->role == 'super admin') {
+        if (Auth::user()->hasRole('super admin')) {
             $$module_name_singular = User::findOrFail($id);
             $userprofile = Userprofile::where('user_id', $id)->first();
         } else {
@@ -484,7 +486,7 @@ class UserController extends Controller
 
         // $$module_name_singular = User::findOrFail($id);
 
-        if (Auth::user()->role == 'super admin') {
+        if (Auth::user()->hasRole('super admin')) {
             $$module_name_singular = User::findOrFail($id);
         } else {
             $$module_name_singular = User::findOrFail(Auth::user()->id);
@@ -524,7 +526,7 @@ class UserController extends Controller
 
         // $$module_name_singular = User::findOrFail($id);
 
-        if (Auth::user()->role == 'super admin') {
+        if (Auth::user()->hasRole('super admin')) {
             $$module_name_singular = User::findOrFail($id);
             $userprofile = Userprofile::where('user_id', $id)->first();
         } else {
@@ -572,7 +574,7 @@ class UserController extends Controller
 
         $$module_name_singular = $module_model::findOrFail($id);
 
-        if (Auth::user()->role == 'super admin') {
+        if (Auth::user()->hasRole('super admin')) {
             $$module_name_singular = $module_model::findOrFail($id);
             $userprofile = Userprofile::where('user_id', $id)->first();
         } else {

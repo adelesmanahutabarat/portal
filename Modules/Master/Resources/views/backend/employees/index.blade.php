@@ -40,9 +40,10 @@
                     <label for="">Cabang</label>
                     <form id="frm-filter" class="form-inline" action="#">
                         <div class="form-group mb-2 ">
-                            <label class="sr-only">Bulan</label>
-                            <select class="form-control" name="bulan" id="bulan">
-                                @foreach($branches as $item)
+                            <label class="sr-only">Cabang</label>
+                            <select class="form-control" name="cabang" id="cabang">
+                            <option value="">All</option>    
+                              @foreach($branches as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
@@ -125,7 +126,7 @@ table = $('#datatable').DataTable({
     ajax: {
         'url': '{{ route("backend.$module_name.index_list") }}',
         'data': function(d) {
-            d.bulan = $("#bulan").val()
+            d.cabang = $("#cabang").val()
         },
     },
     columns: [{
@@ -183,7 +184,6 @@ table = $('#datatable').DataTable({
 });
 
 $("#btnfilter").click(function() {
-    // alert("test filter");
     table.draw();
 });
 </script>
